@@ -7,23 +7,21 @@ namespace NearestVehiclePositionsAssessment.Models
 	{
         public int VehicleId { get; set; }
         public string VehicleRegistration { get; set; }
-        public float Latitude { get; set; }
-        public float Longitude { get; set; }
+        public Coordinate Coordinate { get; set; }
         public UInt64 RecordedTimeUtc { get; set; }
 
-        public Car(int vehicleId, string vehicleRegistration, float latitude, float longitude, UInt64 recordedTimeUtc)
+        public Car(int vehicleId, string vehicleRegistration, Coordinate coordinate, UInt64 recordedTimeUtc)
         {
             VehicleId = vehicleId;
             VehicleRegistration = vehicleRegistration;
-            Latitude = latitude;
-            Longitude = longitude;
+            Coordinate = coordinate;
             RecordedTimeUtc = recordedTimeUtc;
         }
 
         public float DistanceTo(float latitude, float longitude)
         {
 
-            var distance = Math.Sqrt(Math.Pow(Latitude - latitude, 2) + Math.Pow(Longitude - longitude, 2));
+            var distance = Math.Sqrt(Math.Pow(Coordinate.Latitude - latitude, 2) + Math.Pow(Coordinate.Longitude - longitude, 2));
             return (float)distance;
         }
 
@@ -46,7 +44,7 @@ namespace NearestVehiclePositionsAssessment.Models
             ulong recordedTimeUtc = BitConverter.ToUInt64(buffer, offset);
             offset += sizeof(UInt64);
 
-            Car car = new Car(vehicleId, vehicleRegistration, latitude, longitude, recordedTimeUtc);
+            Car car = new Car(vehicleId, vehicleRegistration, new Coordinate { Latitude = latitude, Longitude = longitude }, recordedTimeUtc);
 
             return car;
         }

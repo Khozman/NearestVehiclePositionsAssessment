@@ -18,6 +18,7 @@ namespace NearestVehiclePositionsAssessment
                 var car = Car.FromBytes(array, ref offset);
                 list.Add(car);
             }
+            list = list.OrderBy(c => c.Coordinate.Latitude).ThenBy(c => c.Coordinate.Longitude).ToList();
             return list;
         }
 
